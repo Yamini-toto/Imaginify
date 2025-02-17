@@ -1,4 +1,4 @@
-import {ClerkProvider, SignIn} from '@clerk/nextjs'
+import {ClerkProvider} from '@clerk/nextjs'
 import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "../lib/utils";
