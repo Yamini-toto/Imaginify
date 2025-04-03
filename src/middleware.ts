@@ -1,12 +1,18 @@
-import { clerkMiddleware } from '@clerk/nextjs/server'
-import { NextResponse } from 'next/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
-export default clerkMiddleware(async (auth, req) => {
-  const { userId, redirectToSignIn } = await auth()
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/api/webhooks/clerk',
+  '/api/webhooks/stripe',
+]);
 
-  // Allow access to all routes
-  return NextResponse.next()
-})
+
+export default clerkMiddleware((auth, req) => {
+  if (isPublicRoute(req)) {
+    return NextResponse.next();
+  }
+});
 
 export const config = {
   matcher: [
@@ -15,4 +21,4 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-}
+};
